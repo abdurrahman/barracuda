@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>Abdurrahman Işık</Authors>
+        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Barracuda.Core\Barracuda.Core.csproj" />
+    </ItemGroup>
+
+</Project>

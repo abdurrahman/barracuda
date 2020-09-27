@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>Abdurrahman Işık</Authors>
+        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Barracuda.Core\Barracuda.Core.csproj" />
+      <ProjectReference Include="..\Barracuda.Domain\Barracuda.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Mapster" Version="6.5.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="User\Dtos" />
+    </ItemGroup>
+
+</Project>

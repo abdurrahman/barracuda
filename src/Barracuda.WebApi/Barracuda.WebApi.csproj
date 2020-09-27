@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <Authors>Abdurrahman Işık</Authors>
+        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="9.2.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.8" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Barracuda.Application\Barracuda.Application.csproj" />
+    </ItemGroup>
+
+
+</Project>
