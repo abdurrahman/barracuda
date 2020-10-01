@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -8,6 +10,7 @@ namespace Barracuda.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BaseController : ControllerBase
     {
         protected string UserId => GetAuthenticatedUserId();
@@ -64,7 +67,7 @@ namespace Barracuda.WebApi.Controllers
         }
         
         /// <summary>
-        ///     Get user id info from user claim
+        /// Get user id info from user claim
         /// </summary>
         private string GetAuthenticatedUserId()
         {

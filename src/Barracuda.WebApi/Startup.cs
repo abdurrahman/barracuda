@@ -1,7 +1,12 @@
+using Barracuda.Application;
+using Barracuda.Application.Message;
+using Barracuda.Core;
 using Barracuda.Core.Authorization;
 using Barracuda.Core.Configurations;
+using Barracuda.Core.Logging;
 using Barracuda.Domain;
 using Barracuda.WebApi.Configurations;
+using Barracuda.WebApi.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -37,9 +42,17 @@ namespace Barracuda.WebApi
             
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<ITokenHelper<ApplicationUser>, TokenHelper<ApplicationUser>>();
+            
+            services.AddScoped(typeof(IRepository<>), typeof(BarracudaEfRepository<>));
+            services.AddScoped(typeof(IRepository<,>), typeof(BarracudaEfRepository<,>));
+            services.AddSingleton<IObjectMapper, MapsterObjectMapper>();
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IActivityLog, LogService>();
 
             // Swagger Config
             services.AddSwaggerConfiguration();
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +76,11 @@ namespace Barracuda.WebApi
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => 
+            { 
+                endpoints.MapControllers(); 
+                endpoints.MapHub<MessageHub>("/messagehub"); 
+            });
             
             app.UseSwaggerSetup();
         }

@@ -5,7 +5,7 @@ namespace Barracuda.Application.Message
 {
     public interface IMessageService
     {
-        void SendMessage(MessageDto message);
+        Task SendMessage(MessageDto message);
 
         Task<IList<MessageDto>> GetMessages(string userId);
 

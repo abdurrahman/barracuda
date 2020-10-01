@@ -1,17 +1,22 @@
+using System;
 using System.Threading.Tasks;
 using Barracuda.Application.Message;
-using Barracuda.WebApi.Models.Messages;
+using Barracuda.WebApi.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Barracuda.WebApi.Controllers
 {
     public class MessagesController : BaseController
     {
         private readonly IMessageService _messageService;
+        private readonly IHubContext<MessageHub> _hubContext;
 
-        public MessagesController(IMessageService messageService)
+        public MessagesController(IMessageService messageService, 
+            IHubContext<MessageHub> hubContext)
         {
             _messageService = messageService;
+            _hubContext = hubContext;
         }
 
         // GET api/messages
@@ -32,15 +37,23 @@ namespace Barracuda.WebApi.Controllers
 
         // POST api/messages
         [HttpPost]
-        public async Task<IActionResult> CreateMessage([FromBody] MessageCreateModel model)
+        public async Task<IActionResult> SendMessage([FromBody] MessageDto model)
         {
-            await Task.FromResult(0);
+            await _hubContext.Clients.Client(model.RecipientId).SendAsync("NewMessage", DateTime.Now);
+            
+            await _messageService.SendMessage(new MessageDto
+            {
+                Text = model.Text,
+                RecipientId = model.RecipientId,
+                SenderId = UserId
+            });
+            
             return Ok();
         }
 
         // PUT api/messages/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateMessage([FromRoute] int id, [FromBody] MessageUpdateModel model)
+        public async Task<IActionResult> UpdateMessage([FromRoute] int id, [FromBody] MessageDto model)
         {
             await Task.FromResult(0);
             return Ok();

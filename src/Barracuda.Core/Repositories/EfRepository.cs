@@ -1,19 +1,19 @@
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
-namespace Barracuda.Core
+namespace Barracuda.Core.Repositories
 {
-    public class EfRepository<TEntity> : EfRepository<TEntity, int>, IRepository<TEntity>
+    public class EfRepository<TDbContext, TEntity> : EfRepository<TDbContext, TEntity, int>, IRepository<TEntity>
+        where TDbContext : DbContext
         where TEntity : class, IEntity<int>
     {
-        protected EfRepository(DbContext dbContext)
+        public EfRepository(TDbContext dbContext)
             : base(dbContext)
         {
-            
         }
     }
 
@@ -22,13 +22,14 @@ namespace Barracuda.Core
     /// </summary>
     /// <typeparam name="TEntity">Entity type</typeparam>
     /// <typeparam name="TKey">Identifier type</typeparam>
-    public class EfRepository<TEntity, TKey> : DbContext, IRepository<TEntity, TKey>
+    public class EfRepository<TDbContext, TEntity, TKey> : IRepository<TEntity, TKey>
+        where TDbContext : DbContext
         where TEntity : class, IEntity<TKey>
     {
         private readonly DbSet<TEntity> _dbSet;
-        private readonly DbContext _dbContext;
+        private readonly TDbContext _dbContext;
 
-        protected EfRepository(DbContext dbContext)
+        public EfRepository(TDbContext dbContext)
         {
             _dbContext = dbContext;
             _dbSet = _dbContext.Set<TEntity>();

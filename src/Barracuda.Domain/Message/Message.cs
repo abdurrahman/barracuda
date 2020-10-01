@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Immutable;
 using Barracuda.Core;
 
 namespace Barracuda.Domain
@@ -18,15 +17,5 @@ namespace Barracuda.Domain
         public DateTime CreateDate { get; set; }
         
         public ApplicationUser User { get; set; }
-       
-        public void AddActivityLog(ActivityLog log)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ImmutableList<ActivityLog> GetUncommittedActivityLogs()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

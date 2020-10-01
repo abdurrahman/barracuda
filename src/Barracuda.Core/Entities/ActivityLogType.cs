@@ -4,6 +4,8 @@ namespace Barracuda.Core
     {
         Register,
         Login,
+        InvalidLogin,
+        IsAccountLockedOut,
         UserBlock
     }
 }
