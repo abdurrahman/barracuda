@@ -1,10 +1,11 @@
 # Barracuda Message Service Tool
 
-A simple message service tool
+A simple messaging service tool
 
 ## Prerequisites
 
 * [.NET Core SDK (3.1.4)](https://dotnet.microsoft.com/download/dotnet-core/3.1)
+* Postgresql
 
 ## Installation
 
@@ -106,6 +107,7 @@ Request Body:
 ## Built with
 
 * C#, .NET Core
+* Posgresql
 * EntityFramework Core
 * FluentValidation
 * Mapster
