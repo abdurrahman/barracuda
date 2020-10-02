@@ -1,6 +1,10 @@
-# Barracuda Message Service Tool
+# Barracuda Message Service
 
-A simple messaging service tool
+A simple messaging service tool with written .NET Core
+
+> A barracuda is a large, predatory, ray-finned fish known for its fearsome appearance and ferocious behaviour. ~Wiki 
+>
+> I was looking for a new hdd for myself, so i was impressed the Segate Barracuda version name and named this project as Barracuda. I know its not similar with the service tool what i made but its kinda cool name i think. :)
 
 ## Prerequisites
 
