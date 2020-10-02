@@ -4,7 +4,7 @@ A simple message service tool
 
 ## Prerequisites
 
-* .NET Core SDK
+* [.NET Core SDK (3.1.4)](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
 ## Installation
 
@@ -23,6 +23,13 @@ You can run the Barracuda service by running these commands from the root folder
     docker-compose build
     docker-compose up
 ```
+
+## Todo
+
+* Add user block feature
+* Exception handling
+* Group or private chat feature
+* Unit tests
 
 ## Built with
 

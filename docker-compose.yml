@@ -1,0 +1,39 @@
+version: '3.4'
+
+networks:
+    barracuda-api-dev:
+        driver: bridge
+        
+services:
+    barracuda-api:
+        image: barracuda-api:latest
+        depends_on:
+            - "postgres_image"
+        ports:
+            - "5106:80"
+        build:
+            context: .
+            dockerfile: src/Barracuda.WebApi/Dockerfile
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=http://+:80
+        networks:
+            - barracuda-api-dev
+        
+    postgres_image:
+        image: postgres:latest
+        ports:
+            - 5432:5432
+        restart: always
+        volumes:
+            - db_volume:/var/lib/postgresql/data
+            - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+        environment:
+            POSTGRES_USER: "abdurrahman"
+            POSTGRES_PASSWORD: "ibanez21"
+            POSTGRES_DB: "barracuda-prod"
+        networks:
+            - barracuda-api-dev
+            
+volumes:
+    db_volume:
