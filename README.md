@@ -1,4 +1,4 @@
-# Barracuda Message Service
+# Barracuda Message Service [![Build Status](https://travis-ci.org/abdurrahman/barracuda.svg?branch=master)](https://travis-ci.org/abdurrahman/barracuda)
 
 A simple messaging service tool with written .NET Core
 
@@ -10,6 +10,7 @@ A simple messaging service tool with written .NET Core
 
 * [.NET Core SDK (3.1.4)](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 * Postgresql
+* Docker
 
 ## Installation
 
@@ -18,6 +19,22 @@ git clone https://github.com/abdurrahman/barracuda.git
 cd barracuda
 dotnet build
 dotnet test
+```
+
+### Db Migration
+
+You can run the migration by running these commands from the root folder (where the .sln file is located):
+
+* Adding migration
+
+```shell
+dotnet ef migrations add InitialCreate --project src/Barracuda.Application/Barracuda.Application.csproj --startup-project src/Barracuda.WebApi/Barracuda.WebApi.csproj
+```
+
+* Applying migration
+
+```shell
+dotnet ef database update --project src/Barracuda.Application/Barracuda.Application.csproj --startup-project src/Barracuda.WebApi/Barracuda.WebApi.csproj
 ```
 
 ## Running the app using Docker
@@ -116,6 +133,7 @@ Request Body:
 * FluentValidation
 * Mapster
 * Swagger
+* Docker, Docker Compose
 
 ## License
 [MIT](LICENSE.md)
