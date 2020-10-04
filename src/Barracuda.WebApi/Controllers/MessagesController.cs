@@ -1,22 +1,15 @@
-using System;
 using System.Threading.Tasks;
 using Barracuda.Application.Message;
-using Barracuda.WebApi.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Barracuda.WebApi.Controllers
 {
     public class MessagesController : BaseController
     {
         private readonly IMessageService _messageService;
-        private readonly IHubContext<MessageHub> _hubContext;
-
-        public MessagesController(IMessageService messageService, 
-            IHubContext<MessageHub> hubContext)
+        public MessagesController(IMessageService messageService)
         {
             _messageService = messageService;
-            _hubContext = hubContext;
         }
 
         // GET api/messages
@@ -39,8 +32,6 @@ namespace Barracuda.WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromBody] MessageDto model)
         {
-            await _hubContext.Clients.Client(model.RecipientId).SendAsync("NewMessage", DateTime.Now);
-            
             await _messageService.SendMessage(new MessageDto
             {
                 Text = model.Text,

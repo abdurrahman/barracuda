@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Authors>Abdurrahman Işık</Authors>
-        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/abdurrahman/barracuda.git</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +19,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Barracuda.Application\Barracuda.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\script.js" />
     </ItemGroup>
 
 

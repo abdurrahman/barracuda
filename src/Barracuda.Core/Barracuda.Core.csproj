@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Authors>Abdurrahman Işık</Authors>
-        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/abdurrahman/barracuda.git</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>

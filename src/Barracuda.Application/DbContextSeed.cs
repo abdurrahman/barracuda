@@ -13,61 +13,87 @@ namespace Barracuda.Application
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager, BarracudaDbContext context)
         {
-            // TODO: Only run this if using a real database
-            if (!context.Database.EnsureCreated())
+            try
             {
-                context.Database.Migrate();
-            }
+                // We're using command-type migration with dotnet ef tool.
+                // If not needed migration history then reopen this
+                // if (!await context.Database.EnsureCreatedAsync())
+                // {
+                //     await context.Database.MigrateAsync();
+                // }
 
-            await SeedRoles(roleManager);
-            await SeedUsers(userManager, context);
+                await SeedRoles(roleManager);
+                await SeedUsers(userManager, context);
+                
+                if ((await context.Database.GetPendingMigrationsAsync()).Any())
+                {
+                    await context.Database.MigrateAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException(ex.Message);
+            }
         }
 
         private static async Task SeedUsers(UserManager<ApplicationUser> userManager, BarracudaDbContext context)
         {
-            if (!userManager.Users.Any())
+            if (userManager.Users.Any()) return;
+            var playerList = new List<ApplicationUser>
             {
-                var playerList = new List<ApplicationUser>
+                new ApplicationUser()
                 {
-                    new ApplicationUser()
-                    {
-                        UserName = "Abdurrahman",
-                        Email = "isik.abdurrahmann@gmail.com",
-                        FirstName = "Abdurrahman",
-                        LastName = "Işık",
-                        CreateDate = DateTime.UtcNow
-                    }
-                };
-
-                playerList.ForEach(player =>
+                    UserName = "Quentin",
+                    Email = "quentin@tarantino.com",
+                    FirstName = "Quentin",
+                    LastName = "Tarantino",
+                    CreateDate = DateTime.UtcNow
+                },
+                new ApplicationUser()
                 {
-                    player.PasswordHash = CreatePasswordHash(player, "admin");
-                    
-                    var identityResult = userManager.CreateAsync(player).Result;
-                    if (identityResult.Succeeded)
-                    {
-                        userManager.AddToRoleAsync(player, "Admin");
-                    }
-                });
+                    UserName = "Martin",
+                    Email = "martin@scorsese.com",
+                    FirstName = "Martin",
+                    LastName = "Scorsese",
+                    CreateDate = DateTime.UtcNow
+                },
+                new ApplicationUser()
+                {
+                    UserName = "David",
+                    Email = "david@fincher.com",
+                    FirstName = "David",
+                    LastName = "Fincher",
+                    CreateDate = DateTime.UtcNow
+                }
+            };
 
-                await context.SaveChangesAsync();
-            }
+            playerList.ForEach(player =>
+            {
+                player.PasswordHash = CreatePasswordHash(player, "admin");
+
+                var identityResult = userManager.CreateAsync(player).Result;
+                if (identityResult.Succeeded)
+                {
+                    userManager.AddToRoleAsync(player, "Admin");
+                }
+            });
+
+            await context.SaveChangesAsync();
         }
 
         private static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.Roles.Any())
+            if (roleManager.Roles.Any()) return;
+            var roleList = new List<IdentityRole>
             {
-                var roleList = new List<IdentityRole>
-                {
-                    new IdentityRole {Name = "Admin"},
-                    new IdentityRole {Name = "User"}
-                };
+                new IdentityRole {Name = "Admin"},
+                new IdentityRole {Name = "User"}
+            };
 
-                foreach (var role in roleList)
-                {
-                    await roleManager.CreateAsync(role);
-                }
+            foreach (var role in roleList)
+            {
+                await roleManager.CreateAsync(role);
             }
         }
 

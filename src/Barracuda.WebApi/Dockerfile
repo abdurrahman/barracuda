@@ -8,9 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /app
 COPY . .
-#COPY ["src/Barracuda.WebApi/Barracuda.WebApi.csproj", "./Barracuda.WebApi/"]
-#RUN dotnet restore "./Barracuda.WebApi/Barracuda.WebApi.csproj"
-#COPY . .
+
 WORKDIR "/app/src/Barracuda.WebApi"
 RUN dotnet restore
 

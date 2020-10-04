@@ -1,15 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Barracuda.Application.Users.Dtos;
 using Barracuda.Core;
 using Barracuda.Core.Authorization;
 using Barracuda.Core.Logging;
 using Barracuda.Domain;
-using Barracuda.WebApi.Hubs;
-using Barracuda.WebApi.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace Barracuda.WebApi.Controllers
 {
@@ -19,19 +17,16 @@ namespace Barracuda.WebApi.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenHelper<ApplicationUser> _tokenHelper;
         private readonly IActivityLog _activityLog;
-        private readonly IHubContext<MessageHub> _hubContext;
 
         public AccountController(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager, 
             ITokenHelper<ApplicationUser> tokenHelper, 
-            IActivityLog activityLog, 
-            IHubContext<MessageHub> hubContext)
+            IActivityLog activityLog)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _tokenHelper = tokenHelper;
             _activityLog = activityLog;
-            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -45,24 +40,23 @@ namespace Barracuda.WebApi.Controllers
             model.RememberMe, true);
             if (result.Succeeded)
             {
+                // Create Succeeded login event log
                 await _activityLog.AddActivityLog(ActivityLogType.Login, UserId);
                 
                 var user = await _userManager.FindByNameAsync(model.UserName);
-                // Send onConnected event to hub
-                await _hubContext.Clients.All.SendAsync("OnConnected", DateTime.Now, 
-                    $"{user.FirstName} {user.LastName} logged in" );
-                
                 var tokenResponse = _tokenHelper.GenerateToken(user);
                 return ApiResponse(tokenResponse);
             }
 
             if (result.IsLockedOut)
             {
+                // Create IsLockedOut login event log
                 await _activityLog.AddActivityLog(ActivityLogType.IsAccountLockedOut, UserId);
                 AddError("This user is temporarily blocked");
                 return ApiResponse();
             }
 
+            // Create Invalid login event log
             await _activityLog.AddActivityLog(ActivityLogType.InvalidLogin, UserId);
 
             AddError("Incorrect user or password");
@@ -76,24 +70,24 @@ namespace Barracuda.WebApi.Controllers
         {
             if (!ModelState.IsValid) return ApiResponse(ModelState);
 
+            // Todo: Move this into UserService
             var user = new ApplicationUser
             {
                 UserName = model.UserName,
                 Email = model.Email,
                 EmailConfirmed = true,
                 FirstName = model.FirstName,
-                LastName = model.LastName
+                LastName = model.LastName,
+                CreateDate = DateTime.UtcNow
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
+                // Create register event log
                 await _activityLog.AddActivityLog(ActivityLogType.Register, user.Id);
-                
-                await _hubContext.Clients.All.SendAsync("NewUser", DateTime.Now, 
-                    $"{user.FirstName} {user.LastName} welcome aboard" );
-                
+
                 var tokenResponse = _tokenHelper.GenerateToken(user);
                 return ApiResponse(tokenResponse);
             }

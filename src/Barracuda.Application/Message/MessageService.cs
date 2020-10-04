@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Barracuda.Application.Message
         public async Task SendMessage(MessageDto message)
         {
             var entity = _mapper.MapTo<Domain.Message>(message);
+            entity.CreateDate = DateTime.UtcNow;
 
             await _messageRepository.InsertAsync(entity);
         }
@@ -29,7 +31,8 @@ namespace Barracuda.Application.Message
         {
             // Todo: Use pagination while retrieving all messages.
             var result = await _messageRepository.TableNoTracking
-                .Where(c => (c.SenderId == userId || c.RecipientId == userId) && (c.RecipientId == userId || c.SenderId == userId))
+                .Where(c => (c.SenderId == userId || c.RecipientId == userId) &&
+                            (c.RecipientId == userId || c.SenderId == userId))
                 .ToListAsync();
 
             return _mapper.MapTo<List<MessageDto>>(result);

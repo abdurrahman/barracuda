@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Barracuda.WebApi.Models.Account
+namespace Barracuda.Application.Users.Dtos
 {
     public class LoginModel
     {
@@ -9,6 +9,16 @@ namespace Barracuda.WebApi.Models.Account
         public string Password { get; set; }
 
         public bool RememberMe { get; set; }
+
+        public LoginModel()
+        {
+        }
+        
+        public LoginModel(string userName, string password)
+        {
+            UserName = userName;
+            Password = password;
+        }
     }
         
     public class LoginModelValidator : AbstractValidator<LoginModel>

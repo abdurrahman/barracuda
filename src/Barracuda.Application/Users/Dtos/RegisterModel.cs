@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Barracuda.WebApi.Models.Account
+namespace Barracuda.Application.Users.Dtos
 {
     public class RegisterModel
     {
