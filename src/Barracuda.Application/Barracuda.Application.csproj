@@ -3,9 +3,19 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <Authors>Abdurrahman Işık</Authors>
-        <PackageProjectUrl>https://github.com/abdurrahman/barracuda.git</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/abdurrahman/barracuda.git</RepositoryUrl>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="FluentValidation" Version="9.2.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    </ItemGroup>
+    
     <ItemGroup>
       <ProjectReference Include="..\Barracuda.Core\Barracuda.Core.csproj" />
       <ProjectReference Include="..\Barracuda.Domain\Barracuda.Domain.csproj" />
