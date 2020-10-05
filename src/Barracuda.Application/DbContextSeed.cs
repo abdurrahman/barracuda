@@ -16,19 +16,19 @@ namespace Barracuda.Application
             try
             {
                 // We're using command-type migration with dotnet ef tool.
-                // If not needed migration history then reopen this
-                // if (!await context.Database.EnsureCreatedAsync())
-                // {
-                //     await context.Database.MigrateAsync();
-                // }
-
-                await SeedRoles(roleManager);
-                await SeedUsers(userManager, context);
-                
-                if ((await context.Database.GetPendingMigrationsAsync()).Any())
+                // If not needed migration history then reopen this.
+                if (!await context.Database.EnsureCreatedAsync())
                 {
                     await context.Database.MigrateAsync();
                 }
+
+                // await SeedRoles(roleManager);
+                // await SeedUsers(userManager, context);
+                //
+                // if ((await context.Database.GetPendingMigrationsAsync()).Any())
+                // {
+                //     await context.Database.MigrateAsync();
+                // }
 
             }
             catch (Exception ex)

@@ -12,8 +12,8 @@ namespace Barracuda.Client
         {
             var userList = new List<LoginModel>
             {
-                new LoginModel("Quentin", "admin"),
-                new LoginModel("Martin", "admin"),
+                new LoginModel("Quentin", "Admin145*"),
+                new LoginModel("Martin", "Admin145*"),
                 new LoginModel("David", "admin")
             };
             var connection = new HubConnectionBuilder()

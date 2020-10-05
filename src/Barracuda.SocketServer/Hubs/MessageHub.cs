@@ -9,13 +9,13 @@ using Barracuda.Application.Users.Dtos;
 using Barracuda.Core.Authorization;
 using Flurl.Http;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 
 namespace Barracuda.SocketServer.Hubs
 { 
     public class MessageHub : Hub
     {
-        // Todo: Move this appsettings and use IOptions<> for setting values.
-        private const string BaseApiUrl = "http://localhost:5106/api";
+        private readonly string _baseApiUrl;
         private readonly IMessageService _messageService;
         private readonly IUserService _userService;
 
@@ -26,10 +26,13 @@ namespace Barracuda.SocketServer.Hubs
         private static ConcurrentDictionary<string, string> ConnectedUsers { get; set; } =
             new ConcurrentDictionary<string, string>();
 
-        public MessageHub(IMessageService messageService, IUserService service)
+        public MessageHub(IMessageService messageService, 
+            IUserService service, IConfiguration configuration)
         {
             _messageService = messageService;
             _userService = service;
+
+            _baseApiUrl = configuration["BaseApiUrl"];
         }
 
         public async Task SendMessage(string username, string message)
@@ -106,7 +109,7 @@ namespace Barracuda.SocketServer.Hubs
         {
             try
             {
-                var apiResponse = await $"{BaseApiUrl}/account/login"
+                var apiResponse = await $"{_baseApiUrl}/account/login"
                     .WithHeader("Content-Type", "application/json")
                     .PostJsonAsync(loginPayload)
                     .ReceiveJson<TokenResponseModel>();
