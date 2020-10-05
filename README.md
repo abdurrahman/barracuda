@@ -120,10 +120,10 @@ Request Body:
 
 ## Todo
 
-* Add user block feature
+* ~~Add user block feature~~
 * Exception handling
 * Group or private chat feature
-* Unit tests
+* ~~Unit tests (% 30)~~
 
 ## Built with
 
